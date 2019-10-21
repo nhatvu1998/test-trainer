@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="1.css" />
+  <title>Caro A</title>
+</head>
+<body>
+  <div>
+    <table>
+      <tr>
+        <td class="box"></td>
+        <td class="box"></td>
+        <td class="box"></td>
+      </tr>
+      <tr>
+        <td class="box"></td>
+        <td class="box"></td>
+        <td class="box"></td>
+      </tr>
+      <tr>
+        <td class="box"></td>
+        <td class="box"></td>
+        <td class="box"></td>
+      </tr>
+    </table>
+    <div id="alert"></div>
+    <div id="btn"></div>
+   
+  </div>
+</body>
+
+<script>
+  let dem = 0;
+  let playerWin = '';
+
+  const boxs = document.querySelectorAll('td');
+  console.log(boxs);
+  boxs.forEach(box => box.addEventListener('click', choose))
+
+  function choose(e) {
+    
+    console.log(this.innerHTML);
+    if(this.innerHTML == '' && playerWin == '') {
+      dem++;
+      this.innerHTML = dem % 2 != 0 ? "X" : "O";
+    }
+    
+    for(let i=0;i<boxs.length;i++) {
+      if(i%3==0 && boxs[i].innerHTML == boxs[i+1].innerHTML && boxs[i+1].innerHTML == boxs[i+2].innerHTML && boxs[i].innerHTML != '') {
+        document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+        playerWin = boxs[i].innerHTML;
+        document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+      } 
+
+      if ((i>=0&&i<=2) && boxs[i].innerHTML == boxs[i + 3].innerHTML && boxs[i + 3].innerHTML == boxs[i + 6].innerHTML && boxs[i].innerHTML != '') {
+        document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+        playerWin = boxs[i].innerHTML;
+        document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+      }
+
+      if (i == 2 && boxs[i].innerHTML == boxs[i + 2].innerHTML && boxs[i + 2].innerHTML == boxs[i + 4].innerHTML && boxs[i].innerHTML != '') {
+        document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+        playerWin = boxs[i].innerHTML;
+        document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+      }
+
+      if (i == 0 && boxs[i].innerHTML == boxs[i + 4].innerHTML && boxs[i + 4].innerHTML == boxs[i + 8].innerHTML && boxs[i].innerHTML != '') {
+        document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+        playerWin = boxs[i].innerHTML;
+        document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+      }
+
+      console.log(boxs[i].innerHTML);
+
+    }
+    if (dem == 9) {
+      document.getElementById('alert').innerHTML = 'Hòa';
+      document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+    }
+  }
+
+  function reset() {
+    boxs.forEach(box => box.innerHTML = '');
+    dem = 0;
+    playerWin = '';
+    document.getElementById('alert').innerHTML = '';
+  }
+</script>
+</html>

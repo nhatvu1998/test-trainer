@@ -1,0 +1,39 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin:0;
+  padding:0;
+}
+
+tr{
+  display: flex;
+  flex-direction: row;
+}
+
+tr:first-child{
+  background-color: blue;
+  cursor: pointer;
+  /* position: fixed; */
+}
+
+.fixed-nav tr:first-child {
+  position: fixed;
+  padding-top:0px;
+  margin-top:0px;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+}
+td {
+  width:50px;
+  height:30px;
+  border: 1px solid black;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#btn {
+  text-align:center;
+}

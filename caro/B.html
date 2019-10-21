@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="1.css" />
+    <title>Caro B</title>
+  </head>
+  <body>
+    <div>
+      <p>Nhập số hàng</p>
+      <input type="text" id="row" name="row" />
+    </div>
+    
+    <div>
+      <p>Nhập số ô liên tiếp để thắng</p>
+      <input type="text" id="num" name="num" />
+    </div>
+    
+    <button class="play" onclick="playGame()">Play</button>
+    <div id="main"></div>
+      <div id="alert"></div>
+      <div id="btn"></div>
+  </body>
+
+  <script>
+    let dem = 0;
+    let playerWin = "";
+
+    function render(row) {
+      let result = "<table>";
+      for (let i = 0; i < row; i++) {
+        result += "<tr>";
+        for (let j = 0; j < row; j++) {
+          result += "<td type='' row='" + i + "' col='" + j + "'></td>";
+        }
+        result += "</tr>";
+      }
+      result += "</table>";
+
+      return result;
+    }
+
+    function playGame() {
+      let rows = document.getElementById("row").value;
+      let nums = document.getElementById("num").value;
+      if (Number(nums)>Number(rows)) {
+        alert('vui long nhap lai');
+      } else {
+        document.getElementById("main").innerHTML = render(rows);
+      }
+      
+      const boxs = document.querySelectorAll("td");
+      boxs.forEach(box => box.addEventListener("click", choose));
+    }
+
+    function choose(e) {
+      
+      let rows = Number(document.getElementById("row").value);
+      const boxs = document.querySelectorAll("td");
+
+      let nums = Number(document.getElementById("num").value);
+      
+      if (this.innerHTML == '' && playerWin == '') {
+        dem++;
+        this.innerHTML = dem % 2 != 0 ? "X" : "O";
+      }
+      //kiem tra hang ngang
+      for(let i=0; i< boxs.length; i++) {
+        if (boxs[i].innerHTML != ''  && (i+nums<=boxs.length) && (i%rows+nums <=rows )  ) {
+          let temp = 1;
+          for(let j=i+1;j<i+nums;j++) {
+            if(boxs[i].innerHTML == boxs[j].innerHTML) {
+              temp++;
+            }
+            console.log(temp);
+            if (temp == nums) {
+              document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+              playerWin = boxs[i].innerHTML;
+              document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+            }
+          }
+          
+        }
+
+        //kiem tra hang doc
+        if (boxs[i].innerHTML != '' && (i+(nums-1)*rows <boxs.length)) {
+          let temp = 1;
+          for (let j = i+rows; j < i + nums*rows; j+=rows) {
+            if (boxs[i].innerHTML == boxs[j].innerHTML) {
+              temp++;
+            }
+            console.log(temp);
+            if (temp == nums) {
+              document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+              playerWin = boxs[i].innerHTML;
+              document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+            }
+          }
+
+        }
+
+        //kiem tra duong cheo chinh
+        if (boxs[i].innerHTML != ''  && (i % rows + nums <= rows) && (i + (nums - 1) * rows < boxs.length)) {
+          
+          let temp = 1;
+          let dem = 1;
+          for (let j = i + rows + dem; j < i + nums * (rows+1) -1 ; j = j+ rows +dem) {
+            if (boxs[i].innerHTML == boxs[j].innerHTML) {
+              temp++;
+            }
+            console.log(temp);
+            if (temp == nums) {
+              document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+              playerWin = boxs[i].innerHTML;
+              document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+            }
+          }
+        }
+
+        //kiem tra duong cheo phu
+        if (boxs[i].innerHTML != '' && (i % rows - nums+1 >= 0) && (i + (nums - 1) * rows < boxs.length)) {
+          console.log('ok');
+          let temp = 1;
+          let dem = 1;
+          for (let j = i + rows - dem; j < i + nums * (rows - 1) ; j = j + rows - dem) {
+            if (boxs[i].innerHTML == boxs[j].innerHTML) {
+              temp++;
+            }
+            console.log(temp);
+            if (temp == nums) {
+              document.getElementById('alert').innerHTML = boxs[i].innerHTML + ' win';
+              playerWin = boxs[i].innerHTML;
+              document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+            }
+          }
+
+        }
+        
+      }
+
+      if (dem == boxs.length) {
+        document.getElementById('alert').innerHTML = 'Hòa';
+        document.getElementById('btn').innerHTML = '<button onclick=reset()>Reset</button>';
+      }
+    }
+
+    function reset() {
+      const boxs = document.querySelectorAll("td");
+        boxs.forEach(box => box.innerHTML = '');
+        dem = 0;
+        playerWin = '';
+        document.getElementById('alert').innerHTML = '';
+      }
+  </script>
+</html>

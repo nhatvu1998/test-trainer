@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="1.css" />
+    <title>Grid</title>
+  </head>
+  <body>
+    <div id="main"></div>
+    <div>
+      <p>Nhập số hàng</p>
+      <input type="text" id="row" name="row" />
+    </div>
+
+    <div>
+      <p>Nhập số cột</p>
+      <input type="text" id="col" name="col" />
+    </div>
+
+    <button class="play" onclick="start()">ok</button>
+    
+    <div id="alert"></div>
+    <div id="btn"></div>
+  </body>
+  <script>
+    let data = [];
+    function render(row, col) {
+      let result = "<table>";
+      for (let i = 0; i <= row; i++) {
+        result += "<tr>";
+        for (let j = 0; j < col; j++) {
+          result += "<td type='' row='" + i + "' col='" + j + "'></td>";
+        }
+        result += "</tr>";
+      }
+      result += "</table>";
+      console.log(result);
+      return result;
+    }
+
+    function start() {
+      let rows = document.getElementById("row").value;
+      let cols = document.getElementById("col").value;
+      
+      document.getElementById("main").innerHTML = render(rows, cols);
+      insertData();
+      saveData();
+      let header = document.querySelectorAll("tr:first-child td");
+      header.forEach(col => col.addEventListener('click', sort))
+
+    }
+
+    function insertData() {
+      let cols = document.getElementById("col").value;
+      let boxs = document.querySelectorAll("td");
+      for (let i = 0; i < boxs.length; i++) {
+        if(i<cols) {
+          boxs[i].innerHTML = i+1;
+        } else {
+          boxs[i].innerHTML = Math.floor(Math.random() * 1000) + 1;
+        }
+      }
+    }
+
+    function saveData() {
+      data=[];
+      let boxs = document.querySelectorAll("td"); 
+      let cols = Number(document.getElementById("col").value);
+      console.log(boxs.length);
+      for (let i = cols; i < boxs.length; i+=cols) {
+        let temp = [];
+          for(let j=i;j<i+cols;j++) {
+            temp.push(boxs[j].innerHTML);
+          }
+          data.push(temp);
+      }
+    }
+
+    function sort(e) {
+      let cols = Number(document.getElementById("col").value);
+      let rows = Number(document.getElementById("row").value);
+      let col = Number(this.innerHTML) -1
+      //for(let i=0;i<rows;i++) {
+        //console.log(data[i][col-1]);
+      //}
+      data.sort((a,b) => {
+        return a[col] - b[col];
+      })
+      console.log(data);
+      let newArr = [];
+
+      for(let i=0;i<data.length;i++) {
+        newArr.push(...data[i]);
+      }
+
+      console.log(newArr);
+
+      let boxs = document.querySelectorAll("td");
+      for (let i = cols; i < boxs.length; i++) {
+        boxs[i].innerHTML = newArr[i-cols];
+        
+      }
+
+    }
+    
+
+    
+    const nav = document.querySelector('#main');
+    let topOfNav = nav.offsetTop;
+    console.log(topOfNav);
+    console.log(nav.offsetHeight);
+    function fixNav() {
+        if (window.scrollY >= topOfNav) {
+          document.body.classList.add('fixed-nav');
+        } else {
+          document.body.classList.remove('fixed-nav');
+        }
+      }
+
+    window.addEventListener('scroll', fixNav);
+
+  </script>
+</html>
